@@ -8,19 +8,25 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.example.newsapp.ui.presentation.onboarding.OnBoardingPageScreen
-import com.example.newsapp.ui.presentation.onboarding.component.OnBoardingPage
-import com.example.newsapp.ui.presentation.onboarding.pages
+import androidx.core.view.WindowCompat
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.newsapp.presentation.onboarding.OnBoardingPageScreen
+import com.example.newsapp.presentation.onboarding.OnBoardingViewModel
 import com.example.newsapp.ui.theme.NewsAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         installSplashScreen()
         setContent {
             NewsAppTheme {
                 Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
-                    OnBoardingPageScreen()
+                    val viewModel: OnBoardingViewModel = hiltViewModel()
+                    OnBoardingPageScreen(viewModel::onEvent)
                 }
             }
         }

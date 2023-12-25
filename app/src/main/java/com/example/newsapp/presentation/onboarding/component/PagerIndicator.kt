@@ -1,4 +1,4 @@
-package com.example.newsapp.ui.presentation.onboarding.component
+package com.example.newsapp.presentation.onboarding.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import com.example.newsapp.ui.presentation.Dimens.IndicatorSize
+import com.example.newsapp.presentation.Dimens.IndicatorSize
 import com.example.newsapp.ui.theme.BlueGray
 
 @Composable

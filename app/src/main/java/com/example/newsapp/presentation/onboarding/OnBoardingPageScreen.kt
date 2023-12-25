@@ -1,4 +1,4 @@
-package com.example.newsapp.ui.presentation.onboarding
+package com.example.newsapp.presentation.onboarding
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -19,16 +19,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.newsapp.ui.presentation.Dimens.MediumPadding2
-import com.example.newsapp.ui.presentation.common.NewsButton
-import com.example.newsapp.ui.presentation.common.NewsTextButton
-import com.example.newsapp.ui.presentation.onboarding.component.OnBoardingPage
-import com.example.newsapp.ui.presentation.onboarding.component.PagerIndicator
+import com.example.newsapp.presentation.Dimens.MediumPadding2
+import com.example.newsapp.presentation.common.NewsButton
+import com.example.newsapp.presentation.common.NewsTextButton
+import com.example.newsapp.presentation.onboarding.component.OnBoardingPage
+import com.example.newsapp.presentation.onboarding.component.PagerIndicator
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnBoardingPageScreen() {
+fun OnBoardingPageScreen(
+    event: (OnBoardingEvent) -> Unit
+) {
     Column(modifier = Modifier.fillMaxSize()) {
         val pagerState = rememberPagerState(initialPage = 0) {
             pages.size
@@ -59,15 +61,12 @@ fun OnBoardingPageScreen() {
         ) {
             PagerIndicator(
                 modifier = Modifier
-                    .width(52.dp)
-                    .fillMaxWidth(),
+                    .width(52.dp),
                 pageSize = pages.size,
                 selectedPage = pagerState.currentPage
             )
             Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End,
-                modifier = Modifier.fillMaxWidth()
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 val scope = rememberCoroutineScope()
                 if (buttonSave.value[0].isNotEmpty()) {
@@ -79,15 +78,15 @@ fun OnBoardingPageScreen() {
                 }
                 NewsButton(text = buttonSave.value[1], onClick = {
                     scope.launch {
-                        if (pagerState.currentPage == 3) {
-
+                        if (pagerState.currentPage == 2) {
+                            event(OnBoardingEvent.SaveAppEntry)
                         } else {
                             pagerState.animateScrollToPage(page = pagerState.currentPage + 1)
                         }
                     }
                 })
             }
-            Spacer(modifier = Modifier.weight(0.5f))
         }
+        Spacer(modifier = Modifier.weight(0.5f))
     }
 }
