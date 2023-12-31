@@ -11,6 +11,7 @@ import com.example.newsapp.domain.usecase.appentry.ReadAppEntry
 import com.example.newsapp.domain.usecase.appentry.SaveAppEntry
 import com.example.newsapp.domain.usecase.news.GetNews
 import com.example.newsapp.domain.usecase.news.NewsUseCases
+import com.example.newsapp.domain.usecase.news.SearchNews
 import com.example.newsapp.util.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -42,11 +43,11 @@ object AppModule {
     @Provides
     @Singleton
     fun providesRetrofit(): NewsApi =
-        Retrofit
-            .Builder()
+        Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .build().create(NewsApi::class.java)
+            .build()
+            .create(NewsApi::class.java)
 
     @Provides
     @Singleton
@@ -59,5 +60,5 @@ object AppModule {
     fun providesNewsUsesCase(
         newsRepository: NewsRepository
     ): NewsUseCases =
-        NewsUseCases(GetNews(newsRepository))
+        NewsUseCases(GetNews(newsRepository), SearchNews(newsRepository))
 }

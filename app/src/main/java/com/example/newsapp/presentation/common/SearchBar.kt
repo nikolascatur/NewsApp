@@ -34,7 +34,7 @@ fun SearchBar(
     modifier: Modifier = Modifier,
     text: String,
     readOnly: Boolean,
-    onClick: () -> Unit,
+    onClick: (() -> Unit)? = null,
     onValueChange: (String) -> Unit,
     onSearch: () -> Unit
 ) {
@@ -47,7 +47,7 @@ fun SearchBar(
 
     LaunchedEffect(key1 = isClicked) {
         if (isClicked) {
-            onClick.invoke()
+            onClick?.invoke()
         }
     }
 

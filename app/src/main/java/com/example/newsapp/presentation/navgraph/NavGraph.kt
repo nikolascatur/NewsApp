@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.newsapp.presentation.newsnavigator.NewsNavigator
 import com.example.newsapp.presentation.onboarding.OnBoardingPageScreen
 import com.example.newsapp.presentation.onboarding.OnBoardingViewModel
+import com.example.newsapp.presentation.search.SearchScreen
 
 @Composable
 fun NavGraph(

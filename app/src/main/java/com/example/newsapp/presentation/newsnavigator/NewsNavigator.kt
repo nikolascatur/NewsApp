@@ -1,5 +1,6 @@
 package com.example.newsapp.presentation.newsnavigator
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,6 +25,8 @@ import com.example.newsapp.presentation.home.HomeViewModel
 import com.example.newsapp.presentation.navgraph.Route
 import com.example.newsapp.presentation.newsnavigator.component.BottomNavigation
 import com.example.newsapp.presentation.newsnavigator.component.NewsBottomNavigation
+import com.example.newsapp.presentation.search.SearchScreen
+import com.example.newsapp.presentation.search.SearchViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,7 +77,10 @@ fun NewsNavigator() {
                     navigate = { route -> navigateToTab(navController, route) })
             }
             composable(Route.SearchScreen.route) {
-
+                val viewModel: SearchViewModel = hiltViewModel()
+                val state = viewModel.state.value
+                OnBackClickStateSaver(navController = navController)
+                SearchScreen(state = state, event = viewModel::onEvent)
             }
             composable(Route.BookmarkScreen.route) {
 
@@ -83,6 +89,13 @@ fun NewsNavigator() {
 
             }
         }
+    }
+}
+
+@Composable
+private fun OnBackClickStateSaver(navController: NavController) {
+    BackHandler(true) {
+        navigateToTab(navController = navController, route = Route.HomeScreen.route)
     }
 }
 

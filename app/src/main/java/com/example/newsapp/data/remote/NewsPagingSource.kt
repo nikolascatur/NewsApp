@@ -2,11 +2,13 @@ package com.example.newsapp.data.remote
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.newsapp.data.remote.dto.NewsResponse
 import com.example.newsapp.domain.model.Article
 
 class NewsPagingSource(
-    private val newsApi: NewsApi,
-    private val sources: String
+    private val sources: String,
+    private val searchQuery: String = "",
+    private val dynamicNewsResponse: CallNewsResponse
 ) : PagingSource<Int, Article>() {
     override fun getRefreshKey(state: PagingState<Int, Article>): Int? {
         return state.anchorPosition?.let {
@@ -20,7 +22,12 @@ class NewsPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
         val page = params.key ?: 1
         return try {
-            val news = newsApi.getNews(sources, page)
+            val news =
+                dynamicNewsResponse.callNewsResponse(
+                    searchQuery,
+                    sources,
+                    page
+                )
             totalNewsCount += news.articles.size
             val articles = news.articles.distinctBy { it.title }
             LoadResult.Page(
@@ -33,5 +40,12 @@ class NewsPagingSource(
             LoadResult.Error(e)
         }
     }
+}
 
+interface CallNewsResponse {
+    suspend fun callNewsResponse(
+        searchQuery: String,
+        sources: String,
+        page: Int
+    ): NewsResponse
 }
