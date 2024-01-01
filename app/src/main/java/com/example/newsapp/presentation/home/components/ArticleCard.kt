@@ -38,11 +38,11 @@ import com.example.newsapp.ui.theme.NewsAppTheme
 fun ArticleHomeCard(
     modifier: Modifier = Modifier,
     article: Article,
-    onClick: (() -> Unit)? = null
+    onClick: ((Article) -> Unit)? = null
 ) {
 
     val context = LocalContext.current
-    Row(modifier = modifier.clickable { onClick?.invoke() }) {
+    Row(modifier = modifier.clickable { onClick?.invoke(article) }) {
         AsyncImage(
             modifier = Modifier
                 .size(Dimens.ArticleCardSize)

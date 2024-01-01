@@ -19,7 +19,7 @@ import com.example.newsapp.presentation.home.components.ArticleHomeCard
 fun ArticleList(
     modifier: Modifier = Modifier,
     articles: LazyPagingItems<Article>,
-    onClick: () -> Unit
+    onClick: (Article) -> Unit
 ) {
     val handlePagingResult = handlePagingResult(articles = articles)
     if (handlePagingResult) {

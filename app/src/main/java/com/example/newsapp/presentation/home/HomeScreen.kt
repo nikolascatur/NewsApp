@@ -27,13 +27,13 @@ import com.example.newsapp.domain.model.Article
 import com.example.newsapp.presentation.Dimens.MediumPadding1
 import com.example.newsapp.presentation.common.ArticleList
 import com.example.newsapp.presentation.common.SearchBar
-import com.example.newsapp.presentation.navgraph.Route
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     articles: LazyPagingItems<Article>,
-    navigate: (String) -> Unit
+    navigateToSearch: () -> Unit,
+    navigateToDetail: (Article) -> Unit
 ) {
     val title by remember {
         derivedStateOf {
@@ -66,7 +66,7 @@ fun HomeScreen(
         SearchBar(
             text = "",
             readOnly = true,
-            onClick = { navigate(Route.SearchScreen.route) },
+            onClick = navigateToSearch,
             onValueChange = {},
             onSearch = {}
         )
@@ -85,7 +85,7 @@ fun HomeScreen(
             articles = articles,
             modifier = Modifier.padding(horizontal = MediumPadding1),
             onClick = {
-
+                navigateToDetail(it)
             })
     }
 
