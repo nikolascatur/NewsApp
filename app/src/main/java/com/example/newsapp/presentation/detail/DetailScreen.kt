@@ -2,6 +2,7 @@ package com.example.newsapp.presentation.detail
 
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -25,14 +27,29 @@ import com.example.newsapp.domain.model.Article
 import com.example.newsapp.presentation.Dimens.ArticleImageHeight
 import com.example.newsapp.presentation.Dimens.MediumPadding1
 import com.example.newsapp.presentation.detail.component.DetailTopBar
+import com.example.newsapp.util.UIComponent
 
 @Composable
 fun DetailScreen(
     article: Article,
     event: (DetailEvent) -> Unit,
+    sideEffect: UIComponent?,
     navigatorUp: () -> Unit
 ) {
     val context = LocalContext.current
+
+    LaunchedEffect(key1 = sideEffect) {
+        sideEffect?.let {
+            when (sideEffect) {
+                is UIComponent.Toast -> {
+                    Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+                    event(DetailEvent.RemoveSideEffect)
+                }
+
+                else -> Unit
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -58,7 +75,7 @@ fun DetailScreen(
                 }
             },
             onBookmarkClick = {
-                event(DetailEvent.SaveArticles)
+                event(DetailEvent.InsertDeleteArticle(article))
             },
             onBackClick = navigatorUp
         )

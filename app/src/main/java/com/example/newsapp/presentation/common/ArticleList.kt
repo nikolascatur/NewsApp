@@ -18,6 +18,30 @@ import com.example.newsapp.presentation.home.components.ArticleHomeCard
 @Composable
 fun ArticleList(
     modifier: Modifier = Modifier,
+    articles: List<Article>,
+    onClick: (Article) -> Unit
+) {
+    if (articles.isEmpty()) {
+        EmptyScreen()
+    }
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(
+            MediumPadding1
+        ),
+        contentPadding = PaddingValues(all = ExtraSmallPadding2)
+    ) {
+        items(
+            count = articles.size
+        ) {
+            ArticleHomeCard(article = articles[it], onClick = onClick)
+        }
+    }
+}
+
+@Composable
+fun ArticleList(
+    modifier: Modifier = Modifier,
     articles: LazyPagingItems<Article>,
     onClick: (Article) -> Unit
 ) {

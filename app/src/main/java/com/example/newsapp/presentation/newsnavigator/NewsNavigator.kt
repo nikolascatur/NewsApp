@@ -21,7 +21,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.newsapp.R
 import com.example.newsapp.domain.model.Article
+import com.example.newsapp.presentation.bookmark.BookmarkScreen
+import com.example.newsapp.presentation.bookmark.BookmarkViewModel
 import com.example.newsapp.presentation.detail.DetailScreen
+import com.example.newsapp.presentation.detail.DetailViewModel
 import com.example.newsapp.presentation.home.HomeScreen
 import com.example.newsapp.presentation.home.HomeViewModel
 import com.example.newsapp.presentation.navgraph.Route
@@ -29,6 +32,7 @@ import com.example.newsapp.presentation.newsnavigator.component.BottomNavigation
 import com.example.newsapp.presentation.newsnavigator.component.NewsBottomNavigation
 import com.example.newsapp.presentation.search.SearchScreen
 import com.example.newsapp.presentation.search.SearchViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -100,15 +104,26 @@ fun NewsNavigator() {
                     })
             }
             composable(Route.BookmarkScreen.route) {
-
+                val viewModel: BookmarkViewModel = hiltViewModel()
+                val state = viewModel.state.value
+                OnBackClickStateSaver(navController = navController)
+                BookmarkScreen(
+                    state = state,
+                    navigateToDetail = { article ->
+                        navigateToDetail(navController, article)
+                    }
+                )
             }
             composable(Route.DetailsScreen.route) {
+                val viewModel: DetailViewModel = hiltViewModel()
                 navController.previousBackStackEntry?.savedStateHandle?.get<Article>("article")
                     ?.let { article ->
                         DetailScreen(
                             article = article,
-                            event = {},
-                            navigatorUp = { navController.navigateUp() })
+                            event = viewModel::onEvent,
+                            navigatorUp = { navController.navigateUp() },
+                            sideEffect = viewModel.sideEffect
+                        )
                     }
 
             }

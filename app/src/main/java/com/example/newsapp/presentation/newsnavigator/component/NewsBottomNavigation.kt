@@ -19,8 +19,8 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.newsapp.R
+import com.example.newsapp.presentation.Dimens.ExtraSmallPadding
 import com.example.newsapp.presentation.Dimens.IconSize
-import com.example.newsapp.presentation.Dimens.MediumPadding1
 
 @Composable
 fun NewsBottomNavigation(
@@ -44,7 +44,7 @@ fun NewsBottomNavigation(
                             contentDescription = null,
                             modifier = Modifier.size(IconSize)
                         )
-                        Spacer(modifier = Modifier.height(MediumPadding1))
+                        Spacer(modifier = Modifier.height(ExtraSmallPadding))
                         Text(
                             text = bottomNavigation.title,
                             style = MaterialTheme.typography.labelSmall
